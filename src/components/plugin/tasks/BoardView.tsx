@@ -137,67 +137,78 @@ export const BoardView = () => {
 
   return (
     <ScrollArea className="h-full">
-      <div className="p-4">
-        <div className="grid grid-cols-4 gap-3">
-          {columns.map((column) => (
-            <div
-              key={column.id}
-              className="min-h-[400px]"
-              onDragOver={(e) => {
-                e.preventDefault();
-                e.currentTarget.classList.add("bg-primary/5");
-              }}
-              onDragLeave={(e) => {
-                e.currentTarget.classList.remove("bg-primary/5");
-              }}
-              onDrop={(e) => {
-                e.preventDefault();
-                e.currentTarget.classList.remove("bg-primary/5");
-                handleDragEnd(column.id);
-              }}
-            >
-              <div className="mb-3">
-                <div className={`h-1 ${column.color} rounded-full mb-2`} />
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium">{column.label}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {tasks[column.id]?.length || 0}
-                  </span>
-                </div>
+      <div className="p-4 space-y-6">
+        {columns.map((column) => (
+          <div
+            key={column.id}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.currentTarget.classList.add("bg-primary/5");
+            }}
+            onDragLeave={(e) => {
+              e.currentTarget.classList.remove("bg-primary/5");
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              e.currentTarget.classList.remove("bg-primary/5");
+              handleDragEnd(column.id);
+            }}
+            className="rounded-lg border border-border p-4 transition-colors"
+          >
+            <div className="mb-4">
+              <div className={`h-1 ${column.color} rounded-full mb-3`} />
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold">{column.label}</span>
+                <span className="text-xs text-muted-foreground px-2 py-1 rounded-full bg-muted">
+                  {tasks[column.id]?.length || 0}
+                </span>
               </div>
+            </div>
 
-              <div className="space-y-2">
-                {tasks[column.id]?.map((task) => (
+            <div className="space-y-3">
+              {tasks[column.id]?.length === 0 ? (
+                <div className="text-center py-8 text-xs text-muted-foreground">
+                  No tasks in {column.label.toLowerCase()}
+                </div>
+              ) : (
+                tasks[column.id]?.map((task) => (
                   <div
                     key={task.id}
                     draggable
                     onDragStart={() => handleDragStart(task)}
                     onDragEnd={() => setDraggedTask(null)}
-                    className={`p-2 border border-figma-border rounded-sm bg-background hover:border-primary/50 transition-colors cursor-move ${
-                      draggedTask?.id === task.id ? "opacity-50" : ""
+                    className={`p-3 border border-figma-border rounded-lg bg-background hover:border-primary/50 hover:shadow-sm transition-all cursor-move ${
+                      draggedTask?.id === task.id ? "opacity-50 scale-95" : ""
                     }`}
                   >
-                    <div className="flex items-start justify-between mb-1">
-                      <span className="text-xs font-medium flex-1 pr-2">
+                    <div className="flex items-start gap-2 mb-2">
+                      <span className="shrink-0 mt-0.5">{getOriginIcon(task.origin)}</span>
+                      <span className="text-xs font-medium flex-1 break-words">
                         {task.title}
                       </span>
-                      <span className="shrink-0">{getOriginIcon(task.origin)}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Hash className="w-2.5 h-2.5" />
-                        {task.frame_name}
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
+                      <span className="flex items-center gap-1 truncate">
+                        <Hash className="w-3 h-3 shrink-0" />
+                        <span className="truncate">{task.frame_name}</span>
                       </span>
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      @{task.assignee_username}
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-muted-foreground truncate">
+                        @{task.assignee_username}
+                      </span>
+                      {task.due_date && (
+                        <span className="text-xs text-orange-500 shrink-0">
+                          Due {new Date(task.due_date).toLocaleDateString()}
+                        </span>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
+                ))
+              )}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </ScrollArea>
   );
