@@ -11,13 +11,20 @@ interface ChatMessageProps {
 
 export const ChatMessage = ({ type, author_name, content, avatar_color }: ChatMessageProps) => {
   return (
-    <div className="flex gap-2 py-2 px-3 hover:bg-muted/50">
+    <div className={`flex gap-2 py-2 px-3 rounded-lg ${type === "ai" ? "bg-primary/5 border border-primary/20" : "bg-muted/30"}`}>
       <Avatar className={`w-6 h-6 ${type === "ai" ? "bg-primary" : avatar_color} text-white text-xs flex items-center justify-center shrink-0`}>
         {type === "ai" ? <Bot className="w-3 h-3" /> : author_name[0].toUpperCase()}
       </Avatar>
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline gap-2 mb-1">
-          <span className="text-xs font-medium">{author_name}</span>
+          <span className={`text-xs font-medium ${type === "ai" ? "text-primary" : ""}`}>
+            {type === "ai" ? "AI Assistant" : author_name}
+          </span>
+          {type === "ai" && (
+            <span className="text-xs px-1.5 py-0.5 rounded-full bg-primary/20 text-primary">
+              Bot
+            </span>
+          )}
         </div>
         {type === "ai" ? (
           <div className="text-xs text-foreground prose prose-sm max-w-none">
