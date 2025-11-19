@@ -10,7 +10,7 @@ export const PluginUI = () => {
   const [activeTab, setActiveTab] = useState("chat");
 
   return (
-    <div className="w-[380px] bg-background border-l border-figma-border flex flex-col h-full">
+    <div className="w-full bg-background flex flex-col h-full">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full">
         <TabsList className="w-full justify-start rounded-none border-b border-figma-border bg-transparent h-11 p-0">
           <TabsTrigger 
