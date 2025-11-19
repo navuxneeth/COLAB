@@ -82,9 +82,9 @@ Focus on being constructive and specific.`;
     }
 
     const data = await response.json();
-    const clarifiedFeedback = data.choices[0].message.content;
+    const refinedFeedback = data.choices[0].message.content;
 
-    return new Response(JSON.stringify({ clarifiedFeedback }), {
+    return new Response(JSON.stringify({ refinedFeedback }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
