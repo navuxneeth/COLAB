@@ -40,7 +40,7 @@ export const ChatTab = () => {
   const [isAIResponding, setIsAIResponding] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -97,8 +97,8 @@ export const ChatTab = () => {
   };
 
   const scrollToBottom = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   };
 
@@ -213,7 +213,7 @@ export const ChatTab = () => {
         </div>
       </div>
 
-      <ScrollArea className="flex-1 p-3" ref={scrollRef}>
+      <ScrollArea className="flex-1 p-3">
         <div className="space-y-1">
           {messages.map((message) => (
             <ChatMessage
@@ -234,6 +234,7 @@ export const ChatTab = () => {
               </div>
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
       </ScrollArea>
 
