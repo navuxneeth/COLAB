@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { MessageSquare, Bot, Hash } from "lucide-react";
+import { MessageSquare, Bot, Hash, Trash2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface Task {
   id: string;
@@ -15,6 +17,7 @@ interface Task {
 
 export const ListView = () => {
   const [allTasks, setAllTasks] = useState<Task[]>([]);
+  const { toast } = useToast();
 
   useEffect(() => {
     loadTasks();
@@ -88,6 +91,28 @@ export const ListView = () => {
     return `In ${diffDays} days`;
   };
 
+  const handleDelete = async (taskId: string) => {
+    try {
+      const { error } = await supabase
+        .from("tasks")
+        .delete()
+        .eq("id", taskId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Task deleted",
+        description: "The task has been removed",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Failed to delete",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <ScrollArea className="h-full">
       <div className="p-3">
@@ -97,11 +122,12 @@ export const ListView = () => {
               <th className="text-left text-xs font-medium text-muted-foreground pb-2">Task</th>
               <th className="text-left text-xs font-medium text-muted-foreground pb-2">Status</th>
               <th className="text-left text-xs font-medium text-muted-foreground pb-2">Due</th>
+              <th className="text-right text-xs font-medium text-muted-foreground pb-2 w-10"></th>
             </tr>
           </thead>
           <tbody>
             {allTasks.map((task) => (
-              <tr key={task.id} className="border-b border-figma-border hover:bg-muted/50">
+              <tr key={task.id} className="border-b border-figma-border hover:bg-muted/50 group">
                 <td className="py-2">
                   <div className="flex items-start gap-2">
                     {getOriginIcon(task.origin)}
@@ -120,6 +146,16 @@ export const ListView = () => {
                 </td>
                 <td className="py-2">
                   <span className="text-xs text-muted-foreground">{formatDueDate(task.due_date)}</span>
+                </td>
+                <td className="py-2 text-right">
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                    onClick={() => handleDelete(task.id)}
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
                 </td>
               </tr>
             ))}
