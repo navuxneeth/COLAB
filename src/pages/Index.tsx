@@ -1,12 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FigmaCanvas } from "@/components/FigmaCanvas";
 import { PluginUI } from "@/components/PluginUI";
+import { DraggableWindow } from "@/components/DraggableWindow";
+import { FigmaBottomBar } from "@/components/FigmaBottomBar";
 import { useAuth } from "@/hooks/useAuth";
 
 const Index = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const [isPluginOpen, setIsPluginOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -29,7 +32,17 @@ const Index = () => {
   return (
     <div className="flex h-screen w-full overflow-hidden bg-figma-canvas">
       <FigmaCanvas />
-      <PluginUI />
+      <FigmaBottomBar onPluginClick={() => setIsPluginOpen(true)} />
+      {isPluginOpen && (
+        <DraggableWindow
+          title="CoLab"
+          onClose={() => setIsPluginOpen(false)}
+          defaultWidth={380}
+          defaultHeight={600}
+        >
+          <PluginUI />
+        </DraggableWindow>
+      )}
     </div>
   );
 };
