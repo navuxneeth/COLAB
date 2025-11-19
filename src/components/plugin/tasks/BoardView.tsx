@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { MessageSquare, Bot, Hash } from "lucide-react";
+import { MessageSquare, Bot, Hash, Trash2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -124,6 +125,28 @@ export const BoardView = () => {
     setDraggedTask(null);
   };
 
+  const handleDelete = async (taskId: string) => {
+    try {
+      const { error } = await supabase
+        .from("tasks")
+        .delete()
+        .eq("id", taskId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Task deleted",
+        description: "The task has been removed",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Failed to delete",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const getOriginIcon = (origin: Task["origin"]) => {
     switch (origin) {
       case "chat":
@@ -177,15 +200,28 @@ export const BoardView = () => {
                     draggable
                     onDragStart={() => handleDragStart(task)}
                     onDragEnd={() => setDraggedTask(null)}
-                    className={`p-3 border border-figma-border rounded-lg bg-background hover:border-primary/50 hover:shadow-sm transition-all cursor-move ${
+                    className={`group p-3 border border-figma-border rounded-lg bg-background hover:border-primary/50 hover:shadow-sm transition-all cursor-move ${
                       draggedTask?.id === task.id ? "opacity-50 scale-95" : ""
                     }`}
                   >
-                    <div className="flex items-start gap-2 mb-2">
-                      <span className="shrink-0 mt-0.5">{getOriginIcon(task.origin)}</span>
-                      <span className="text-xs font-medium flex-1 break-words">
-                        {task.title}
-                      </span>
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <div className="flex items-start gap-2 flex-1">
+                        <span className="shrink-0 mt-0.5">{getOriginIcon(task.origin)}</span>
+                        <span className="text-xs font-medium flex-1 break-words">
+                          {task.title}
+                        </span>
+                      </div>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(task.id);
+                        }}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                       <span className="flex items-center gap-1 truncate">

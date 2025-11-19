@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronUp, Plus, Hash } from "lucide-react";
+import { ChevronDown, ChevronUp, Plus, Hash, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
@@ -139,9 +139,33 @@ export const ReceivedFeedback = () => {
             [id]: item.details
           }));
         } finally {
-          setRefiningId(id);
+          setRefiningId(null);
         }
       }
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from("feedback")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Feedback deleted",
+        description: "The feedback has been removed",
+      });
+
+      setFeedbackItems(prev => prev.filter(item => item.id !== id));
+    } catch (error: any) {
+      toast({
+        title: "Failed to delete",
+        description: error.message,
+        variant: "destructive",
+      });
     }
   };
 
@@ -246,14 +270,24 @@ export const ReceivedFeedback = () => {
                       <p className="text-xs text-foreground">{refinedFeedback[item.id] || item.details}</p>
                     )}
                   </div>
-                  <Button 
-                    size="sm" 
-                    className="w-full h-7 text-xs"
-                    onClick={() => handleAddAsTask(item)}
-                  >
-                    <Plus className="w-3 h-3 mr-1" />
-                    Add as Task
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      size="sm" 
+                      className="flex-1 h-7 text-xs"
+                      onClick={() => handleAddAsTask(item)}
+                    >
+                      <Plus className="w-3 h-3 mr-1" />
+                      Add as Task
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="destructive"
+                      className="h-7 w-7 p-0"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>

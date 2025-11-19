@@ -12,14 +12,27 @@ serve(async (req) => {
   }
 
   try {
-    const { feedback, area, issue, expectation, frame } = await req.json();
+    const { feedback, area, issue, expectation, frame, titleOnly, singleLine } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
     if (!LOVABLE_API_KEY) {
       throw new Error('LOVABLE_API_KEY is not configured');
     }
 
-    const systemPrompt = `You are a design feedback clarification assistant. 
+    let systemPrompt = '';
+    let userPrompt = '';
+
+    if (titleOnly) {
+      // Generate a concise title (max 8-10 words)
+      systemPrompt = 'You are a UX expert that creates clear, concise feedback titles. Return ONLY the title, nothing else. Maximum 10 words. Be specific and actionable.';
+      userPrompt = `Create a clear, concise title for this feedback:\n\n${feedback}`;
+    } else if (singleLine) {
+      // Generate a single-line task description
+      systemPrompt = 'You are a task management expert. Convert feedback into a clear, actionable single-line task (max 150 characters). Be specific and direct.';
+      userPrompt = `Convert this feedback into a single-line task:\n\n${feedback}`;
+    } else if (area && issue && expectation) {
+      // Full feedback refinement with context
+      systemPrompt = `You are a design feedback clarification assistant. 
 Your job is to take vague user feedback and convert it into clear, actionable feedback for designers.
 
 Given:
@@ -36,6 +49,12 @@ Create a refined, professional feedback message that:
 4. Is concise (2-3 sentences maximum)
 
 Focus on being constructive and specific.`;
+      userPrompt = "Please create refined feedback based on the information provided.";
+    } else {
+      // Simple feedback refinement
+      systemPrompt = 'You are a professional UX designer. Refine the feedback below to be clear, specific, and actionable. Return 2-3 sentences maximum.';
+      userPrompt = feedback;
+    }
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -47,7 +66,7 @@ Focus on being constructive and specific.`;
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: systemPrompt },
-          { role: "user", content: "Please create refined feedback based on the information provided." }
+          { role: "user", content: userPrompt }
         ],
         stream: false
       }),
@@ -63,9 +82,9 @@ Focus on being constructive and specific.`;
     }
 
     const data = await response.json();
-    const refinedFeedback = data.choices[0].message.content;
+    const clarifiedFeedback = data.choices[0].message.content;
 
-    return new Response(JSON.stringify({ refinedFeedback }), {
+    return new Response(JSON.stringify({ clarifiedFeedback }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
