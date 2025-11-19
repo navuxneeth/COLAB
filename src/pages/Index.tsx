@@ -35,7 +35,7 @@ const Index = () => {
     <div className="flex h-screen w-full overflow-hidden bg-figma-canvas">
       <FigmaLeftSidebar />
       <FigmaCanvas />
-      <FigmaRightSidebar />
+      <FigmaRightSidebar onPluginClick={() => setIsPluginOpen(true)} />
       <FigmaBottomBar onPluginClick={() => setIsPluginOpen(true)} />
       {isPluginOpen && (
         <DraggableWindow

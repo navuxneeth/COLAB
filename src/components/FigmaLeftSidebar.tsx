@@ -9,7 +9,7 @@ export const FigmaLeftSidebar = () => {
       <div className="h-12 border-b border-figma-border flex items-center px-3">
         <div className="flex items-center gap-2 flex-1">
           <Home className="w-4 h-4 text-muted-foreground" />
-          <span className="text-sm font-medium">Weijii</span>
+          <span className="text-sm font-medium">Figma</span>
         </div>
       </div>
 
@@ -52,7 +52,7 @@ export const FigmaLeftSidebar = () => {
         </div>
         <ScrollArea className="flex-1">
           <div className="px-2 py-1 space-y-0.5">
-            {["Image 14", "Image 11", "currency_rupee", "calendar_month", "alarm", "Frame 11", "Frame 3"].map((layer, i) => (
+            {["Header Component", "Hero Section", "Product Grid", "Footer", "Navigation Bar", "Card Component", "Button Group"].map((layer, i) => (
               <div
                 key={i}
                 className="px-2 py-1.5 text-xs hover:bg-muted/50 rounded cursor-pointer flex items-center gap-2"
