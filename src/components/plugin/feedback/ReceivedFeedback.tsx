@@ -20,6 +20,7 @@ export const ReceivedFeedback = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [feedbackItems, setFeedbackItems] = useState<FeedbackItem[]>([]);
   const [refinedFeedback, setRefinedFeedback] = useState<Record<string, string>>({});
+  const [refinedTitles, setRefinedTitles] = useState<Record<string, string>>({});
   const [refiningId, setRefiningId] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -87,6 +88,27 @@ export const ReceivedFeedback = () => {
       }));
       console.log("Mapped feedback items:", items);
       setFeedbackItems(items);
+      
+      // Refine titles for all feedback items
+      items.forEach(async (item) => {
+        try {
+          const { data: titleData } = await supabase.functions.invoke("clarify-feedback", {
+            body: { 
+              feedback: `${item.summary}: ${item.details}`,
+              titleOnly: true
+            },
+          });
+          
+          if (titleData?.clarifiedFeedback) {
+            setRefinedTitles(prev => ({
+              ...prev,
+              [item.id]: titleData.clarifiedFeedback
+            }));
+          }
+        } catch (error) {
+          console.error("Error refining title:", error);
+        }
+      });
     }
   };
 
@@ -193,7 +215,9 @@ export const ReceivedFeedback = () => {
                       {item.frame_name}
                     </span>
                   </div>
-                  <p className="text-xs text-foreground">{item.summary}</p>
+                  <p className="text-xs text-foreground">
+                    {refinedTitles[item.id] || item.summary}
+                  </p>
                   <span className="text-xs text-muted-foreground">{item.created_at}</span>
                 </div>
                 <Button
