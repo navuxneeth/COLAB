@@ -19,6 +19,8 @@ interface FeedbackItem {
 export const ReceivedFeedback = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [feedbackItems, setFeedbackItems] = useState<FeedbackItem[]>([]);
+  const [refinedFeedback, setRefinedFeedback] = useState<Record<string, string>>({});
+  const [refiningId, setRefiningId] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -88,8 +90,37 @@ export const ReceivedFeedback = () => {
     }
   };
 
-  const toggleExpand = (id: string) => {
-    setExpandedId(expandedId === id ? null : id);
+  const toggleExpand = async (id: string) => {
+    const newExpandedId = expandedId === id ? null : id;
+    setExpandedId(newExpandedId);
+
+    // If expanding and we don't have refined feedback yet, generate it
+    if (newExpandedId && !refinedFeedback[id]) {
+      const item = feedbackItems.find(f => f.id === id);
+      if (item) {
+        setRefiningId(id);
+        try {
+          const { data, error } = await supabase.functions.invoke("clarify-feedback", {
+            body: { feedback: `${item.summary}: ${item.details}` },
+          });
+
+          if (error) throw error;
+          
+          setRefinedFeedback(prev => ({
+            ...prev,
+            [id]: data?.clarifiedFeedback || item.details
+          }));
+        } catch (error: any) {
+          console.error("Error refining feedback:", error);
+          setRefinedFeedback(prev => ({
+            ...prev,
+            [id]: item.details
+          }));
+        } finally {
+          setRefiningId(id);
+        }
+      }
+    }
   };
 
   const handleAddAsTask = async (item: FeedbackItem) => {
@@ -99,17 +130,23 @@ export const ReceivedFeedback = () => {
 
       toast({
         title: "Creating task...",
-        description: "AI is refining your feedback",
+        description: "AI is creating a single-line task",
       });
 
-      // Use AI to refine feedback into a clear task
+      // Use AI to refine feedback into a single-line task
       const { data: clarifiedData, error: aiError } = await supabase.functions.invoke("clarify-feedback", {
-        body: { feedback: `${item.summary}: ${item.details}` },
+        body: { 
+          feedback: `${item.summary}: ${item.details}`,
+          singleLine: true
+        },
       });
 
       if (aiError) throw aiError;
 
-      const taskTitle = clarifiedData?.clarifiedFeedback || item.summary;
+      // Ensure it's a single line by taking first line and limiting length
+      const taskTitle = (clarifiedData?.clarifiedFeedback || item.summary)
+        .split('\n')[0]
+        .substring(0, 200);
 
       const { error } = await supabase.from("tasks").insert({
         title: taskTitle,
@@ -175,7 +212,16 @@ export const ReceivedFeedback = () => {
 
               {expandedId === item.id && (
                 <div className="mt-3 pt-3 border-t border-figma-border space-y-3">
-                  <p className="text-xs text-muted-foreground">{item.details}</p>
+                  <div className="space-y-2">
+                    <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+                      AI Refined
+                    </p>
+                    {refiningId === item.id ? (
+                      <p className="text-xs text-muted-foreground italic">Refining feedback...</p>
+                    ) : (
+                      <p className="text-xs text-foreground">{refinedFeedback[item.id] || item.details}</p>
+                    )}
+                  </div>
                   <Button 
                     size="sm" 
                     className="w-full h-7 text-xs"
