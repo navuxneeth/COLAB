@@ -53,15 +53,9 @@ export const ReceivedFeedback = () => {
     const { data, error } = await supabase
       .from("feedback")
       .select(`
-        id,
-        summary,
-        details,
-        created_at,
-        frame_id,
-        to_user_id,
-        from_user_id,
-        profiles!feedback_from_user_id_fkey(username),
-        frames(name)
+        *,
+        from_user:profiles!from_user_id(username),
+        frame:frames!frame_id(name)
       `)
       .eq("to_user_id", user.id)
       .order("created_at", { ascending: false });
@@ -81,8 +75,8 @@ export const ReceivedFeedback = () => {
     if (data) {
       const items = data.map((item: any) => ({
         id: item.id,
-        from_username: item.profiles?.username || "Unknown",
-        frame_name: item.frames?.name || "Unknown",
+        from_username: item.from_user?.username || "Unknown",
+        frame_name: item.frame?.name || "Unknown",
         summary: item.summary,
         details: item.details,
         created_at: new Date(item.created_at).toLocaleString(),
