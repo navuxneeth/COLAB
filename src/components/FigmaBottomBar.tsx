@@ -8,7 +8,7 @@ interface FigmaBottomBarProps {
 
 export const FigmaBottomBar = ({ onPluginClick }: FigmaBottomBarProps) => {
   return (
-    <div className="fixed bottom-0 left-0 right-0 h-11 bg-figma-sidebar border-t border-figma-border flex items-center justify-center z-40">
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 h-11 bg-figma-sidebar/95 backdrop-blur-sm border border-figma-border rounded-lg shadow-lg flex items-center justify-center z-40 px-2">
       <div className="flex items-center gap-1">
         <Tooltip>
           <TooltipTrigger asChild>

@@ -18,15 +18,15 @@ export const FigmaCanvas = () => {
             <Menu className="w-4 h-4" />
           </Button>
           
-          {["Random", "Untitled", "Service Design", "Advanced Studies in Interaction Desi...", "Weijii", "Mankind Agritech"].map((file, i) => (
+          {["Dashboard", "E-commerce App", "Social Platform", "Portfolio Website", "CoLab Plugin", "Design System"].map((file, i) => (
             <div
               key={i}
               className={`h-full px-4 flex items-center gap-2 border-r border-figma-border text-xs whitespace-nowrap cursor-pointer hover:bg-muted/30 ${
-                file === "Weijii" ? "bg-figma-canvas" : ""
+                file === "CoLab Plugin" ? "bg-figma-canvas" : ""
               }`}
             >
               <File className="w-3 h-3 text-muted-foreground" />
-              <span className={file === "Weijii" ? "text-foreground" : "text-muted-foreground"}>
+              <span className={file === "CoLab Plugin" ? "text-foreground" : "text-muted-foreground"}>
                 {file}
               </span>
             </div>
@@ -88,17 +88,70 @@ export const FigmaCanvas = () => {
           <ScrollArea className="h-full">
             <div className="p-12">
               <div className="grid grid-cols-2 gap-8 max-w-5xl mx-auto">
-                {["Home Page", "Products Page", "Checkout", "Wishlist"].map((frame) => (
-                  <div
-                    key={frame}
-                    className="border border-figma-border rounded bg-card aspect-[4/3] p-6 hover:border-primary/50 transition-colors cursor-pointer shadow-sm"
-                  >
-                    <div className="text-xs text-muted-foreground font-medium mb-2">
-                      {frame}
+                {/* Dashboard Frame */}
+                <div className="border border-figma-border rounded bg-card aspect-[4/3] p-4 hover:border-primary/50 transition-colors cursor-pointer shadow-sm">
+                  <div className="text-xs text-muted-foreground font-medium mb-3">Dashboard</div>
+                  <div className="w-full h-full bg-background rounded-sm p-3 space-y-2">
+                    <div className="h-8 bg-primary/20 rounded flex items-center px-2">
+                      <div className="text-[8px] font-medium">Navigation Bar</div>
                     </div>
-                    <div className="w-full h-full border border-dashed border-muted rounded-sm" />
+                    <div className="grid grid-cols-3 gap-2 h-16">
+                      <div className="bg-muted rounded flex items-center justify-center text-[7px]">Card 1</div>
+                      <div className="bg-muted rounded flex items-center justify-center text-[7px]">Card 2</div>
+                      <div className="bg-muted rounded flex items-center justify-center text-[7px]">Card 3</div>
+                    </div>
+                    <div className="h-20 bg-muted/50 rounded flex items-center justify-center text-[7px]">Chart Area</div>
                   </div>
-                ))}
+                </div>
+
+                {/* Chat Interface Frame */}
+                <div className="border border-figma-border rounded bg-card aspect-[4/3] p-4 hover:border-primary/50 transition-colors cursor-pointer shadow-sm">
+                  <div className="text-xs text-muted-foreground font-medium mb-3">Chat Interface</div>
+                  <div className="w-full h-full bg-background rounded-sm p-3 flex flex-col">
+                    <div className="h-6 bg-primary/20 rounded-t flex items-center px-2 text-[8px] font-medium">Header</div>
+                    <div className="flex-1 bg-muted/30 p-2 space-y-1.5">
+                      <div className="bg-primary/30 rounded p-1.5 text-[6px] w-2/3">Message 1</div>
+                      <div className="bg-muted rounded p-1.5 text-[6px] w-3/4 ml-auto">Message 2</div>
+                      <div className="bg-primary/30 rounded p-1.5 text-[6px] w-1/2">Message 3</div>
+                    </div>
+                    <div className="h-6 bg-muted rounded-b flex items-center px-2 text-[7px]">Input field</div>
+                  </div>
+                </div>
+
+                {/* E-commerce Frame */}
+                <div className="border border-figma-border rounded bg-card aspect-[4/3] p-4 hover:border-primary/50 transition-colors cursor-pointer shadow-sm">
+                  <div className="text-xs text-muted-foreground font-medium mb-3">E-commerce</div>
+                  <div className="w-full h-full bg-background rounded-sm p-3">
+                    <div className="h-6 bg-primary/20 rounded mb-2 flex items-center px-2 text-[8px]">Shop Header</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className="aspect-square bg-muted rounded p-1.5">
+                          <div className="w-full h-2/3 bg-muted-foreground/20 rounded mb-1" />
+                          <div className="h-1 bg-muted-foreground/30 rounded mb-0.5" />
+                          <div className="h-1 bg-muted-foreground/20 rounded w-1/2" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Task Board Frame */}
+                <div className="border border-figma-border rounded bg-card aspect-[4/3] p-4 hover:border-primary/50 transition-colors cursor-pointer shadow-sm">
+                  <div className="text-xs text-muted-foreground font-medium mb-3">Task Board</div>
+                  <div className="w-full h-full bg-background rounded-sm p-3">
+                    <div className="grid grid-cols-3 gap-2 h-full">
+                      {["To Do", "In Progress", "Done"].map((status) => (
+                        <div key={status} className="bg-muted/30 rounded p-2 flex flex-col">
+                          <div className="text-[7px] font-medium mb-1.5">{status}</div>
+                          <div className="space-y-1">
+                            <div className="h-6 bg-background rounded border border-border text-[6px] p-1">Task</div>
+                            <div className="h-6 bg-background rounded border border-border text-[6px] p-1">Task</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </ScrollArea>
