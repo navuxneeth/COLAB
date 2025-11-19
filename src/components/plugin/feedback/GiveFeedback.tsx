@@ -63,7 +63,7 @@ export const GiveFeedback = () => {
 
   const handleFeedbackChange = (value: string) => {
     setFeedback(value);
-    if (value.length > 10 && value.length < 100) {
+    if (value.length > 10) {
       setShowClarifier(true);
     } else {
       setShowClarifier(false);
