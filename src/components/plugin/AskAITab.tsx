@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Plus, Image, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -30,10 +30,17 @@ export const AskAITab = () => {
   const [results, setResults] = useState<AnalysisResult[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const { toast } = useToast();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadFrames();
   }, []);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [results]);
 
   const loadFrames = async () => {
     const { data } = await supabase
@@ -132,7 +139,7 @@ export const AskAITab = () => {
   return (
     <div className="flex flex-col h-full">
       <ScrollArea className="flex-1">
-        <div className="p-4 space-y-4">
+        <div ref={scrollRef} className="p-4 space-y-4">
           <div className="space-y-2">
             <label className="text-xs font-medium">Select Frame</label>
             <Select value={selectedFrame} onValueChange={setSelectedFrame}>
