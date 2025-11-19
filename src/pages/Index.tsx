@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FigmaCanvas } from "@/components/FigmaCanvas";
+import { FigmaLeftSidebar } from "@/components/FigmaLeftSidebar";
+import { FigmaRightSidebar } from "@/components/FigmaRightSidebar";
 import { PluginUI } from "@/components/PluginUI";
 import { DraggableWindow } from "@/components/DraggableWindow";
 import { FigmaBottomBar } from "@/components/FigmaBottomBar";
@@ -31,7 +33,9 @@ const Index = () => {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-figma-canvas">
+      <FigmaLeftSidebar />
       <FigmaCanvas />
+      <FigmaRightSidebar />
       <FigmaBottomBar onPluginClick={() => setIsPluginOpen(true)} />
       {isPluginOpen && (
         <DraggableWindow
