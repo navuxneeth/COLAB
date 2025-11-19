@@ -43,7 +43,12 @@ export const ReceivedFeedback = () => {
 
   const loadFeedback = async () => {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
+    if (!user) {
+      console.log("No user found");
+      return;
+    }
+
+    console.log("Loading feedback for user:", user.id);
 
     const { data, error } = await supabase
       .from("feedback")
@@ -54,23 +59,37 @@ export const ReceivedFeedback = () => {
         created_at,
         frame_id,
         to_user_id,
-        from_user:from_user_id(username),
-        frame:frame_id(name)
+        from_user_id,
+        profiles!feedback_from_user_id_fkey(username),
+        frames(name)
       `)
       .eq("to_user_id", user.id)
       .order("created_at", { ascending: false });
 
+    console.log("Feedback query result:", { data, error });
+
+    if (error) {
+      console.error("Error loading feedback:", error);
+      toast({
+        title: "Error loading feedback",
+        description: error.message,
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (data) {
       const items = data.map((item: any) => ({
         id: item.id,
-        from_username: item.from_user?.username || "Unknown",
-        frame_name: item.frame?.name || "Unknown",
+        from_username: item.profiles?.username || "Unknown",
+        frame_name: item.frames?.name || "Unknown",
         summary: item.summary,
         details: item.details,
         created_at: new Date(item.created_at).toLocaleString(),
         frame_id: item.frame_id,
         to_user_id: item.to_user_id,
       }));
+      console.log("Mapped feedback items:", items);
       setFeedbackItems(items);
     }
   };
