@@ -42,6 +42,7 @@ All colors MUST be HSL.
     --figma-border: 0 0% 90%;
     --figma-canvas: 0 0% 97%;
     --figma-toolbar: 0 0% 98%;
+    --figma-sidebar: 0 0% 98%;
     --figma-blue: 207 100% 52%;
     
     /* Message colors */
@@ -106,9 +107,10 @@ All colors MUST be HSL.
     --input: 0 0% 25%;
     --ring: 207 100% 52%;
     
-    --figma-border: 0 0% 25%;
-    --figma-canvas: 0 0% 15%;
-    --figma-toolbar: 0 0% 18%;
+    --figma-border: 0 0% 20%;
+    --figma-canvas: 0 0% 18%;
+    --figma-toolbar: 0 0% 14%;
+    --figma-sidebar: 0 0% 12%;
     
     --message-mine: 207 90% 20%;
     --message-other: 0 0% 20%;
