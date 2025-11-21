@@ -5,6 +5,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const FigmaCanvas = () => {
   const { signOut } = useAuth();
@@ -52,6 +53,7 @@ export const FigmaCanvas = () => {
           <Share2 className="w-3 h-3 mr-1" />
           Share
         </Button>
+        <ThemeToggle />
         <Button 
           variant="ghost" 
           size="icon" 

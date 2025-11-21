@@ -79,23 +79,23 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 0 0% 12%;
-    --foreground: 0 0% 95%;
+    --background: 0 0% 14.5%;
+    --foreground: 0 0% 100%;
 
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 26.7%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 26.7%;
+    --popover-foreground: 0 0% 100%;
 
     --primary: 207 100% 52%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 18%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 0 0% 26.7%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 18%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 0 0% 26.7%;
+    --muted-foreground: 0 0% 85%;
 
     --accent: 207 100% 52%;
     --accent-foreground: 0 0% 100%;
@@ -103,20 +103,20 @@ All colors MUST be HSL.
     --destructive: 0 62% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 25%;
-    --input: 0 0% 25%;
+    --border: 0 0% 40%;
+    --input: 0 0% 40%;
     --ring: 207 100% 52%;
     
-    --figma-border: 0 0% 20%;
-    --figma-canvas: 0 0% 18%;
-    --figma-toolbar: 0 0% 14%;
-    --figma-sidebar: 0 0% 12%;
+    --figma-border: 0 0% 40%;
+    --figma-canvas: 0 0% 14.5%;
+    --figma-toolbar: 0 0% 26.7%;
+    --figma-sidebar: 0 0% 26.7%;
     
     --message-mine: 207 90% 20%;
-    --message-other: 0 0% 20%;
+    --message-other: 0 0% 26.7%;
     --message-ai: 48 100% 20%;
     
-    --task-todo: 0 0% 18%;
+    --task-todo: 0 0% 26.7%;
     --task-progress: 207 90% 20%;
     --task-review: 48 100% 20%;
     --task-done: 142 76% 20%;
@@ -124,14 +124,14 @@ All colors MUST be HSL.
     --severity-low: 142 76% 25%;
     --severity-medium: 48 100% 25%;
     --severity-high: 0 84% 30%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 0 0% 14.5%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 207 100% 52%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 0 0% 26.7%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 40%;
+    --sidebar-ring: 207 100% 52%;
   }
 }
 
