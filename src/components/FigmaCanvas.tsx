@@ -8,6 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import chartPlaceholder from "@/assets/chart-placeholder.jpg";
 import productPlaceholder from "@/assets/product-placeholder.jpg";
+import productPlaceholder2 from "@/assets/product-placeholder-2.jpg";
 
 export const FigmaCanvas = () => {
   const { signOut } = useAuth();
@@ -131,17 +132,15 @@ export const FigmaCanvas = () => {
                     <div className="h-6 bg-primary/20 rounded mb-2 flex items-center px-2 text-[8px]">Shop Header</div>
                     <div className="grid grid-cols-2 gap-2">
                       {[
-                        { bar1: "#f24e1e", bar2: "#ff7262" },
-                        { bar1: "#a259ff", bar2: "#1abcfe" },
-                        { bar1: "#0acf83", bar2: "#f24e1e" },
-                        { bar1: "#ff7262", bar2: "#a259ff" }
-                      ].map((colors, i) => (
+                        { bar1: "#f24e1e", bar2: "#ff7262", img: productPlaceholder },
+                        { bar1: "#a259ff", bar2: "#1abcfe", img: productPlaceholder2 }
+                      ].map((item, i) => (
                         <div key={i} className="aspect-square bg-muted rounded p-1.5">
                           <div className="w-full h-2/3 rounded mb-1 overflow-hidden">
-                            <img src={productPlaceholder} alt="Product" className="w-full h-full object-cover" />
+                            <img src={item.img} alt="Product" className="w-full h-full object-cover" />
                           </div>
-                          <div className="h-1 rounded mb-0.5" style={{ backgroundColor: colors.bar1 }} />
-                          <div className="h-1 rounded w-1/2" style={{ backgroundColor: colors.bar2 }} />
+                          <div className="h-1 rounded mb-0.5" style={{ backgroundColor: item.bar1 }} />
+                          <div className="h-1 rounded w-1/2" style={{ backgroundColor: item.bar2 }} />
                         </div>
                       ))}
                     </div>
