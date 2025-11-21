@@ -79,7 +79,7 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 0 0% 14.5%;
+    --background: 0 1% 25%;
     --foreground: 0 0% 100%;
 
     --card: 0 0% 26.7%;
@@ -108,7 +108,7 @@ All colors MUST be HSL.
     --ring: 207 100% 52%;
     
     --figma-border: 0 0% 40%;
-    --figma-canvas: 0 0% 14.5%;
+    --figma-canvas: 0 1% 25%;
     --figma-toolbar: 0 0% 26.7%;
     --figma-sidebar: 0 0% 26.7%;
     
