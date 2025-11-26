@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Search, Send, MoreHorizontal, Bot, Paperclip, Hash } from "lucide-react";
+import { Search, Send, MoreHorizontal, Bot, Paperclip, Hash, ArrowDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -38,9 +38,11 @@ export const ChatTab = () => {
   const [inputValue, setInputValue] = useState("");
   const [showMentions, setShowMentions] = useState(false);
   const [isAIResponding, setIsAIResponding] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!user) return;
@@ -101,6 +103,25 @@ export const ChatTab = () => {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   };
+
+  const checkScrollPosition = () => {
+    if (!scrollAreaRef.current) return;
+    
+    const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+    if (!viewport) return;
+    
+    const { scrollTop, scrollHeight, clientHeight } = viewport;
+    const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+    setShowScrollButton(!isNearBottom);
+  };
+
+  useEffect(() => {
+    const viewport = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    if (viewport) {
+      viewport.addEventListener('scroll', checkScrollPosition);
+      return () => viewport.removeEventListener('scroll', checkScrollPosition);
+    }
+  }, []);
 
   const handleSend = async () => {
     if (!inputValue.trim() || !user) return;
@@ -213,7 +234,7 @@ export const ChatTab = () => {
         </div>
       </div>
 
-      <ScrollArea className="flex-1 p-3">
+      <ScrollArea className="flex-1 p-3 relative" ref={scrollAreaRef}>
         <div className="space-y-1">
           {messages.map((message) => (
             <ChatMessage
@@ -236,6 +257,18 @@ export const ChatTab = () => {
           )}
           <div ref={messagesEndRef} />
         </div>
+        {showScrollButton && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+            <Button 
+              size="sm" 
+              className="bg-primary hover:bg-primary/90 shadow-lg h-8"
+              onClick={scrollToBottom}
+            >
+              <ArrowDown className="w-4 h-4 mr-1" />
+              Scroll to bottom
+            </Button>
+          </div>
+        )}
       </ScrollArea>
 
       <div className="p-3 border-t border-figma-border">

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import colabLogo from "@/assets/colab-logo.png";
 
 interface DraggableWindowProps {
   children: React.ReactNode;
@@ -79,7 +80,10 @@ export const DraggableWindow = ({
         className="h-11 border-b border-border flex items-center justify-between px-4 cursor-move bg-muted/30"
         onMouseDown={handleMouseDown}
       >
-        <span className="text-sm font-medium">{title}</span>
+        <div className="flex items-center gap-2">
+          <img src={colabLogo} alt="CoLab" className="h-5 w-5" />
+          <span className="text-sm font-medium">{title}</span>
+        </div>
         <Button
           variant="ghost"
           size="icon"
