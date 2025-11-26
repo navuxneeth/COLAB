@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import chartPlaceholder from "@/assets/chart-placeholder.jpg";
 import productPlaceholder from "@/assets/product-placeholder.jpg";
-import productPlaceholder2 from "@/assets/product-placeholder-2.jpg";
+import productPlaceholder3 from "@/assets/product-placeholder-3.jpg";
 
 export const FigmaCanvas = () => {
   const { signOut } = useAuth();
@@ -49,7 +49,7 @@ export const FigmaCanvas = () => {
               <div className="w-1 h-1 bg-foreground rounded-sm" />
             </div>
           </Button>
-          <span className="text-sm font-medium">Collab Test File</span>
+          <span className="text-sm font-medium">CoLab Test File</span>
         </div>
         <div className="flex-1" />
         <Button variant="default" size="sm" className="h-7 text-xs bg-primary hover:bg-primary/90">
@@ -133,7 +133,7 @@ export const FigmaCanvas = () => {
                     <div className="grid grid-cols-2 gap-2">
                       {[
                         { bar1: "#f24e1e", bar2: "#ff7262", img: productPlaceholder },
-                        { bar1: "#a259ff", bar2: "#1abcfe", img: productPlaceholder2 }
+                        { bar1: "#a259ff", bar2: "#1abcfe", img: productPlaceholder3 }
                       ].map((item, i) => (
                         <div key={i} className="aspect-square bg-muted rounded p-1.5">
                           <div className="w-full h-2/3 rounded mb-1 overflow-hidden">
